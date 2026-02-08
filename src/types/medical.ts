@@ -1,192 +1,194 @@
-// Tipos TypeScript para el Sistema Médico EstiloLibre
+// TypeScript Types for the Medical System
 
-export interface Paciente {
+export interface Patient {
   id: string;
-  cedula: string;
-  nombre: string;
-  apellido: string;
-  fechaNacimiento: string;
-  genero: 'M' | 'F' | 'Otro';
-  telefono: string;
+  nationalId: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  gender: 'Male' | 'Female' | 'Other';
+  phone: string;
   email: string;
-  direccion: string;
-  tipoSangre: string;
-  alergias: string[];
-  contactoEmergencia: {
-    nombre: string;
-    telefono: string;
-    relacion: string;
+  address: string;
+  bloodType: string;
+  allergies: string[];
+  emergencyContact: {
+    name: string;
+    phone: string;
+    relationship: string;
   };
-  seguroMedico?: string;
-  fechaRegistro: string;
-  estado: 'Activo' | 'Inactivo';
+  medicalInsurance?: string;
+  registrationDate: string;
+  status: 'Active' | 'Inactive';
 }
 
-export interface Medico {
+export interface Doctor {
   id: string;
-  cedula: string;
-  nombre: string;
-  apellido: string;
-  especialidad: string;
-  telefono: string;
+  nationalId: string;
+  firstName: string;
+  lastName: string;
+  specialty: string;
+  phone: string;
   email: string;
-  numeroLicencia: string;
-  fechaRegistro: string;
-  estado: 'Activo' | 'Inactivo';
-  horarioAtencion: {
-    [key: string]: { inicio: string; fin: string; disponible: boolean };
+  licenseNumber: string;
+  insuranceProviders?: string[]; // Added: List of accepted insurances
+  registrationDate: string;
+  status: 'Active' | 'Inactive';
+  officeHours: {
+    [key: string]: { start: string; end: string; available: boolean };
   };
 }
 
-export interface Cita {
+export interface Appointment {
   id: string;
-  pacienteId: string;
-  medicoId: string;
-  fecha: string;
-  hora: string;
-  duracion: number; // en minutos
-  motivo: string;
-  estado: 'Programada' | 'En Curso' | 'Completada' | 'Cancelada' | 'No Asistió';
-  notas?: string;
-  tipo: 'Consulta' | 'Control' | 'Emergencia' | 'Procedimiento';
-  recordatorio: boolean;
+  patientId: string;
+  doctorId: string;
+  patientName: string; // Denormalized for easier display in lists
+  date: string;
+  time: string;
+  duration: number; // in minutes
+  reason: string;
+  status: 'Scheduled' | 'In Progress' | 'Completed' | 'Cancelled' | 'No Show';
+  notes?: string;
+  type: 'Consultation' | 'Control' | 'Emergency' | 'Procedure';
+  reminder: boolean;
+  priority: 'Low' | 'Medium' | 'High' | 'Urgent';
 }
 
-export interface HistorialMedico {
+export interface MedicalHistory {
   id: string;
-  pacienteId: string;
-  medicoId: string;
-  fecha: string;
-  motivo: string;
-  sintomas: string;
-  diagnostico: string;
-  tratamiento: string;
-  medicamentos: Medicamento[];
-  examenes: Examen[];
-  proximaConsulta?: string;
-  notas: string;
-  archivosAdjuntos: ArchivoMedico[];
+  patientId: string;
+  doctorId: string;
+  date: string;
+  reason: string;
+  symptoms: string;
+  diagnosis: string;
+  treatment: string;
+  medications: Medication[];
+  exams: Exam[];
+  nextConsultation?: string;
+  notes: string;
+  attachments: MedicalFile[];
 }
 
-export interface Receta {
+export interface Prescription {
   id: string;
-  pacienteId: string;
-  medicoId: string;
-  fecha: string;
-  medicamentos: MedicamentoReceta[];
-  indicaciones: string;
-  vigencia: string;
-  estado: 'Activa' | 'Vencida' | 'Utilizada';
-  numeroReceta: string;
+  patientId: string;
+  doctorId: string;
+  date: string;
+  medications: PrescriptionMedication[];
+  indications: string;
+  validity: string;
+  status: 'Active' | 'Expired' | 'Used';
+  prescriptionNumber: string;
 }
 
-export interface MedicamentoReceta {
-  nombre: string;
-  dosis: string;
-  frecuencia: string;
-  duracion: string;
-  indicaciones: string;
-  cantidad: number;
+export interface PrescriptionMedication {
+  name: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  indications: string;
+  quantity: number;
 }
 
-export interface Medicamento {
+export interface Medication {
   id: string;
-  nombre: string;
-  principioActivo: string;
-  presentacion: string;
-  concentracion: string;
-  laboratorio: string;
-  precio: number;
+  name: string;
+  activeIngredient: string;
+  presentation: string;
+  concentration: string;
+  laboratory: string;
+  price: number;
   stock: number;
-  fechaVencimiento: string;
+  expiryDate: string;
 }
 
-export interface Examen {
+export interface Exam {
   id: string;
-  nombre: string;
-  tipo: 'Laboratorio' | 'Imagen' | 'Funcional';
-  fecha: string;
-  resultado: string;
-  valorReferencia: string;
-  estado: 'Pendiente' | 'Completado';
-  archivo?: string;
+  name: string;
+  type: 'Laboratory' | 'Imaging' | 'Functional';
+  date: string;
+  result: string;
+  referenceValue: string;
+  status: 'Pending' | 'Completed';
+  file?: string;
 }
 
-export interface ArchivoMedico {
+export interface MedicalFile {
   id: string;
-  nombre: string;
-  tipo: string;
-  tamaño: number;
-  fecha: string;
+  name: string;
+  type: string;
+  size: number;
+  date: string;
   url: string;
 }
 
-export interface Notificacion {
+export interface Notification {
   id: string;
-  tipo: 'Cita' | 'Medicamento' | 'Examen' | 'Sistema' | 'Emergencia';
-  titulo: string;
-  mensaje: string;
-  fecha: string;
-  leida: boolean;
-  prioridad: 'Baja' | 'Media' | 'Alta' | 'Crítica';
-  destinatario: string; // ID del usuario
-  accion?: {
-    tipo: string;
+  type: 'Appointment' | 'Medication' | 'Exam' | 'System' | 'Emergency';
+  title: string;
+  message: string;
+  date: string;
+  read: boolean;
+  priority: 'Low' | 'Medium' | 'High' | 'Critical';
+  recipient: string; // User ID
+  action?: {
+    type: string;
     url: string;
-    texto: string;
+    text: string;
   };
 }
 
-export interface Reporte {
+export interface Report {
   id: string;
-  tipo: 'Pacientes' | 'Citas' | 'Ingresos' | 'Medicamentos' | 'Estadísticas';
-  titulo: string;
-  descripcion: string;
-  fechaGeneracion: string;
-  parametros: Record<string, string | number | boolean>;
-  datos: Record<string, string | number | boolean>[];
-  formato: 'PDF' | 'Excel' | 'CSV';
+  type: 'Patients' | 'Appointments' | 'Income' | 'Medications' | 'Statistics';
+  title: string;
+  description: string;
+  generationDate: string;
+  parameters: Record<string, string | number | boolean>;
+  data: Record<string, string | number | boolean>[];
+  format: 'PDF' | 'Excel' | 'CSV';
 }
 
-export interface EstadisticasDashboard {
-  totalPacientes: number;
-  citasHoy: number;
-  citasSemana: number;
-  pacientesNuevos: number;
-  ingresosMes: number;
-  medicamentosStock: number;
-  alertasCriticas: number;
-  satisfaccionPromedio: number;
+export interface DashboardStatistics {
+  totalPatients: number;
+  appointmentsToday: number;
+  appointmentsWeek: number;
+  newPatients: number;
+  monthlyIncome: number;
+  medicationsStock: number;
+  criticalAlerts: number;
+  averageSatisfaction: number;
 }
 
-export interface FiltrosBusqueda {
-  texto?: string;
-  fechaInicio?: string;
-  fechaFin?: string;
-  especialidad?: string;
-  estado?: string;
-  tipo?: string;
-  prioridad?: string;
-  medico?: string;
-  paciente?: string;
-  diagnostico?: string;
-  medicamento?: string;
+export interface SearchFilters {
+  text?: string;
+  startDate?: string;
+  endDate?: string;
+  specialty?: string;
+  status?: string;
+  type?: string;
+  priority?: string;
+  doctor?: string;
+  patient?: string;
+  diagnosis?: string;
+  medication?: string;
 }
 
-export interface ResultadoBusqueda {
-  tipo: 'Paciente' | 'Medico' | 'Cita' | 'Historial' | 'Receta';
+export interface SearchResult {
+  type: 'Patient' | 'Doctor' | 'Appointment' | 'History' | 'Prescription';
   id: string;
-  titulo: string;
-  subtitulo: string;
-  descripcion: string;
-  fecha: string;
-  relevancia: number;
-  datos: Paciente | Medico | Cita | HistorialMedico | Receta;
-  coincidencias: string[];
+  title: string;
+  subtitle: string;
+  description: string;
+  date: string;
+  relevance: number;
+  data: Patient | Doctor | Appointment | MedicalHistory | Prescription;
+  matches: string[];
 }
 
-// Tipos para gráficos
-export interface DatoGrafico {
+export interface ChartData {
   [key: string]: string | number;
 }
 
@@ -200,25 +202,24 @@ export interface TooltipProps {
   label?: string;
 }
 
-// Tipos específicos para formularios
-export interface FormularioHistorial {
-  pacienteId: string;
-  medicoId: string;
-  motivo: string;
-  sintomas: string;
-  diagnostico: string;
-  tratamiento: string;
-  medicamentos: MedicamentoReceta[];
-  examenes: Examen[];
-  proximaConsulta: string;
-  notas: string;
-  archivosAdjuntos: ArchivoMedico[];
+export interface HistoryForm {
+  patientId: string;
+  doctorId: string;
+  reason: string;
+  symptoms: string;
+  diagnosis: string;
+  treatment: string;
+  medications: PrescriptionMedication[];
+  exams: Exam[];
+  nextConsultation: string;
+  notes: string;
+  attachments: MedicalFile[];
 }
 
-export interface FormularioReceta {
-  pacienteId: string;
-  medicoId: string;
-  medicamentos: MedicamentoReceta[];
-  indicaciones: string;
-  vigencia: string;
+export interface PrescriptionForm {
+  patientId: string;
+  doctorId: string;
+  medications: PrescriptionMedication[];
+  indications: string;
+  validity: string;
 }

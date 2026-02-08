@@ -1,0 +1,97 @@
+{
+    "portal": {
+        "title": "Patient Portal",
+        "subtitle": "Comprehensive Medical System",
+        "welcome": "Welcome, {{name}}!",
+        "manageHealth": "Manage your health easily and securely"
+    },
+    "tabs": {
+        "dashboard": "Dashboard",
+        "appointments": "Appointments",
+        "tests": "Tests",
+        "prescriptions": "Prescriptions",
+        "payments": "Payments",
+        "profile": "Profile"
+    },
+    "quickStats": {
+        "nextAppointment": "Next Appointment",
+        "activePrescriptions": "Active Prescriptions",
+        "medications": "Medications",
+        "tests": "Tests",
+        "results": "Results",
+        "invoices": "Invoices",
+        "pending": "Pending"
+    },
+    "appointments": {
+        "myAppointments": "My Appointments",
+        "requestAppointment": "Request Appointment",
+        "selectDoctor": "Select Doctor",
+        "selectTime": "Select time",
+        "modality": "Modality",
+        "inPerson": "In-Person",
+        "virtual": "Virtual",
+        "reason": "Reason for Consultation",
+        "cost": "Cost",
+        "office": "Office",
+        "videoLink": "Video link",
+        "join": "Join",
+        "cancel": "Cancel",
+        "confirmCancel": "Are you sure you want to cancel this appointment?",
+        "requestSuccess": "Appointment requested successfully. You will receive confirmation by email.",
+        "noAvailableHours": "No available hours"
+    },
+    "tests": {
+        "testResults": "Test Results",
+        "uploadDocument": "Upload Document",
+        "laboratory": "Laboratory",
+        "doctor": "Doctor",
+        "observations": "Observations",
+        "normalRange": "Normal",
+        "date": "Date"
+    },
+    "prescriptions": {
+        "medicalPrescriptions": "Medical Prescriptions",
+        "validUntil": "Valid until",
+        "dosage": "Dosage",
+        "frequency": "Frequency",
+        "duration": "Duration",
+        "route": "Route",
+        "instructions": "Instructions",
+        "dispensed": "Dispensed",
+        "pending": "Pending"
+    },
+    "payments": {
+        "invoicesAndPayments": "Invoices and Payments",
+        "payNow": "Pay Now",
+        "receipt": "Receipt",
+        "dueDate": "Due date",
+        "paymentMethod": "Payment method",
+        "transaction": "Transaction",
+        "processPayment": "Process Payment",
+        "cardType": "Card Type",
+        "cardNumber": "Card Number",
+        "cardholderName": "Cardholder Name",
+        "expirationDate": "Expiration Date",
+        "paymentSuccess": "Payment processed successfully. You will receive the receipt by email."
+    },
+    "profile": {
+        "myProfile": "My Profile",
+        "personalInfo": "Personal Information",
+        "insuranceInfo": "Insurance Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "nationalId": "National ID",
+        "birthDate": "Birth Date",
+        "gender": "Gender",
+        "insurance": "Insurance Provider",
+        "policyNumber": "Policy Number",
+        "editProfile": "Edit Profile",
+        "changePassword": "Change Password"
+    },
+    "quickAccess": {
+        "title": "Quick Access",
+        "viewTests": "View Tests",
+        "myPrescriptions": "My Prescriptions",
+        "payInvoices": "Pay Invoices"
+    }
+}

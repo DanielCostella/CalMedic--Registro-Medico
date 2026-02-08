@@ -1,0 +1,43 @@
+{
+    "welcome": "Welcome, {{name}}!",
+    "title": "Doctor Dashboard",
+    "subtitle": "Manage your health easily and securely",
+    "metrics": {
+        "activePatients": "Active Patients",
+        "todayAppointments": "Today's Appointments",
+        "monthlyRevenue": "Monthly Revenue",
+        "averageSatisfaction": "Average Satisfaction",
+        "prescriptionsIssued": "Prescriptions Issued",
+        "generatedIncome": "Generated Income"
+    },
+    "sections": {
+        "quickActions": "Quick Actions",
+        "todaySchedule": "Today's Schedule",
+        "upcomingActivities": "Upcoming Activities",
+        "alerts": "Important Alerts",
+        "weeklySum mary": "Weekly Summary"
+    },
+    "actions": {
+        "managePatients": "Manage Patients",
+        "scheduleAppointment": "Schedule Appointment",
+        "createPrescription": "Create Prescription",
+        "viewReports": "View Reports",
+        "advancedSearch": "Advanced Search",
+        "medicalChatbot": "Medical Chatbot"
+    },
+    "appointments": {
+        "scheduled": "Scheduled",
+        "confirmed": "Confirmed",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "attend": "Attend",
+        "complete": "Complete",
+        "noAppointments": "No patients scheduled for today",
+        "pendingToday": "You have {{count}} patients pending to be attended today"
+    },
+    "alerts": {
+        "updateHistory": "Remember to update the medical history of attended patients",
+        "newModules": "New modules available! Explore advanced notification, search, and chart tools"
+    }
+}

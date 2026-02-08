@@ -1,245 +1,249 @@
-import { Paciente, Medico, Cita, HistorialMedico, Receta, Notificacion, EstadisticasDashboard } from '@/types/medical';
+import { Patient, Doctor, Appointment, MedicalHistory, Prescription, Notification, DashboardStatistics } from '@/types/medical';
 
-export const mockPacientes: Paciente[] = [
+export const mockPacientes: Patient[] = [
   {
     id: '1',
-    cedula: '12345678',
-    nombre: 'María',
-    apellido: 'González',
-    fechaNacimiento: '1985-03-15',
-    genero: 'F',
-    telefono: '+58 414-1234567',
+    nationalId: '12345678',
+    firstName: 'María',
+    lastName: 'González',
+    birthDate: '1985-03-15',
+    gender: 'Female',
+    phone: '+58 414-1234567',
     email: 'maria.gonzalez@email.com',
-    direccion: 'Av. Principal, Caracas',
-    tipoSangre: 'O+',
-    alergias: ['Penicilina', 'Mariscos'],
-    contactoEmergencia: {
-      nombre: 'Carlos González',
-      telefono: '+58 412-7654321',
-      relacion: 'Esposo'
+    address: 'Av. Principal, Caracas',
+    bloodType: 'O+',
+    allergies: ['Penicilina', 'Mariscos'],
+    emergencyContact: {
+      name: 'Carlos González',
+      phone: '+58 412-7654321',
+      relationship: 'Esposo'
     },
-    seguroMedico: 'Seguros Caracas',
-    fechaRegistro: '2023-01-15',
-    estado: 'Activo'
+    medicalInsurance: 'Seguros Caracas',
+    registrationDate: '2023-01-15',
+    status: 'Active'
   },
   {
     id: '2',
-    cedula: '87654321',
-    nombre: 'José',
-    apellido: 'Rodríguez',
-    fechaNacimiento: '1978-07-22',
-    genero: 'M',
-    telefono: '+58 426-9876543',
+    nationalId: '87654321',
+    firstName: 'José',
+    lastName: 'Rodríguez',
+    birthDate: '1978-07-22',
+    gender: 'Male',
+    phone: '+58 426-9876543',
     email: 'jose.rodriguez@email.com',
-    direccion: 'Calle 5, Valencia',
-    tipoSangre: 'A-',
-    alergias: ['Aspirina'],
-    contactoEmergencia: {
-      nombre: 'Ana Rodríguez',
-      telefono: '+58 414-5432109',
-      relacion: 'Esposa'
+    address: 'Calle 5, Valencia',
+    bloodType: 'A-',
+    allergies: ['Aspirina'],
+    emergencyContact: {
+      name: 'Ana Rodríguez',
+      phone: '+58 414-5432109',
+      relationship: 'Esposa'
     },
-    fechaRegistro: '2023-02-10',
-    estado: 'Activo'
+    registrationDate: '2023-02-10',
+    status: 'Active'
   },
   {
     id: '3',
-    cedula: '11223344',
-    nombre: 'Carmen',
-    apellido: 'Martínez',
-    fechaNacimiento: '1992-11-08',
-    genero: 'F',
-    telefono: '+58 412-3456789',
+    nationalId: '11223344',
+    firstName: 'Carmen',
+    lastName: 'Martínez',
+    birthDate: '1992-11-08',
+    gender: 'Female',
+    phone: '+58 412-3456789',
     email: 'carmen.martinez@email.com',
-    direccion: 'Urbanización Los Palos Grandes, Caracas',
-    tipoSangre: 'B+',
-    alergias: [],
-    contactoEmergencia: {
-      nombre: 'Luis Martínez',
-      telefono: '+58 416-8765432',
-      relacion: 'Padre'
+    address: 'Urbanización Los Palos Grandes, Caracas',
+    bloodType: 'B+',
+    allergies: [],
+    emergencyContact: {
+      name: 'Luis Martínez',
+      phone: '+58 416-8765432',
+      relationship: 'Padre'
     },
-    seguroMedico: 'Seguros Universales',
-    fechaRegistro: '2023-03-05',
-    estado: 'Activo'
+    medicalInsurance: 'Seguros Universales',
+    registrationDate: '2023-03-05',
+    status: 'Active'
   }
 ];
 
-export const mockMedicos: Medico[] = [
+export const mockMedicos: Doctor[] = [
   {
     id: '1',
-    cedula: 'V-9876543',
-    nombre: 'Dr. Carlos',
-    apellido: 'Pérez',
-    especialidad: 'Cardiología',
-    telefono: '+58 414-5555555',
+    nationalId: 'V-9876543',
+    firstName: 'Carlos',
+    lastName: 'Pérez',
+    specialty: 'Cardiología',
+    phone: '+58 414-5555555',
     email: 'carlos.perez@clinica.com',
-    numeroLicencia: 'MED-12345',
-    fechaRegistro: '2020-01-15',
-    estado: 'Activo',
-    horarioAtencion: {
-      'Lunes': { inicio: '08:00', fin: '17:00', disponible: true },
-      'Martes': { inicio: '08:00', fin: '17:00', disponible: true },
-      'Miércoles': { inicio: '08:00', fin: '17:00', disponible: true },
-      'Jueves': { inicio: '08:00', fin: '17:00', disponible: true },
-      'Viernes': { inicio: '08:00', fin: '15:00', disponible: true },
-      'Sábado': { inicio: '09:00', fin: '12:00', disponible: false },
-      'Domingo': { inicio: '00:00', fin: '00:00', disponible: false }
+    licenseNumber: 'MED-12345',
+    registrationDate: '2020-01-15',
+    status: 'Active',
+    officeHours: {
+      'Lunes': { start: '08:00', end: '17:00', available: true },
+      'Martes': { start: '08:00', end: '17:00', available: true },
+      'Miércoles': { start: '08:00', end: '17:00', available: true },
+      'Jueves': { start: '08:00', end: '17:00', available: true },
+      'Viernes': { start: '08:00', end: '15:00', available: true },
+      'Sábado': { start: '09:00', end: '12:00', available: false },
+      'Domingo': { start: '00:00', end: '00:00', available: false }
     }
   },
   {
     id: '2',
-    cedula: 'V-5432109',
-    nombre: 'Dra. Ana',
-    apellido: 'López',
-    especialidad: 'Pediatría',
-    telefono: '+58 426-7777777',
+    nationalId: 'V-5432109',
+    firstName: 'Ana',
+    lastName: 'López',
+    specialty: 'Pediatría',
+    phone: '+58 426-7777777',
     email: 'ana.lopez@clinica.com',
-    numeroLicencia: 'MED-67890',
-    fechaRegistro: '2019-06-20',
-    estado: 'Activo',
-    horarioAtencion: {
-      'Lunes': { inicio: '09:00', fin: '18:00', disponible: true },
-      'Martes': { inicio: '09:00', fin: '18:00', disponible: true },
-      'Miércoles': { inicio: '09:00', fin: '18:00', disponible: true },
-      'Jueves': { inicio: '09:00', fin: '18:00', disponible: true },
-      'Viernes': { inicio: '09:00', fin: '16:00', disponible: true },
-      'Sábado': { inicio: '10:00', fin: '14:00', disponible: true },
-      'Domingo': { inicio: '00:00', fin: '00:00', disponible: false }
+    licenseNumber: 'MED-67890',
+    registrationDate: '2019-06-20',
+    status: 'Active',
+    officeHours: {
+      'Lunes': { start: '09:00', end: '18:00', available: true },
+      'Martes': { start: '09:00', end: '18:00', available: true },
+      'Miércoles': { start: '09:00', end: '18:00', available: true },
+      'Jueves': { start: '09:00', end: '18:00', available: true },
+      'Viernes': { start: '09:00', end: '16:00', available: true },
+      'Sábado': { start: '10:00', end: '14:00', available: true },
+      'Domingo': { start: '00:00', end: '00:00', available: false }
     }
   }
 ];
 
-export const mockCitas: Cita[] = [
+export const mockCitas: Appointment[] = [
   {
     id: '1',
-    pacienteId: '1',
-    medicoId: '1',
-    fecha: '2024-01-15',
-    hora: '10:00',
-    duracion: 30,
-    motivo: 'Control rutinario',
-    estado: 'Programada',
-    tipo: 'Control',
-    recordatorio: true
+    patientId: '1',
+    doctorId: '1',
+    patientName: 'María González',
+    date: '2024-01-15',
+    time: '10:00',
+    duration: 30,
+    reason: 'Control rutinario',
+    status: 'Scheduled',
+    type: 'Control',
+    reminder: true,
+    priority: 'Medium'
   },
   {
     id: '2',
-    pacienteId: '2',
-    medicoId: '2',
-    fecha: '2024-01-16',
-    hora: '14:30',
-    duracion: 45,
-    motivo: 'Consulta por fiebre',
-    estado: 'Completada',
-    tipo: 'Consulta',
-    recordatorio: true,
-    notas: 'Paciente presenta mejoría'
+    patientId: '2',
+    doctorId: '2',
+    patientName: 'José Rodríguez',
+    date: '2024-01-16',
+    time: '14:30',
+    duration: 45,
+    reason: 'Consulta por fiebre',
+    status: 'Completed',
+    type: 'Consultation',
+    reminder: true,
+    notes: 'Paciente presenta mejoría',
+    priority: 'Medium'
   }
 ];
 
-export const mockHistorialMedico: HistorialMedico[] = [
+export const mockHistorialMedico: MedicalHistory[] = [
   {
     id: '1',
-    pacienteId: '1',
-    medicoId: '1',
-    fecha: '2024-01-10',
-    motivo: 'Control cardiológico',
-    sintomas: 'Palpitaciones ocasionales',
-    diagnostico: 'Arritmia leve',
-    tratamiento: 'Medicación antiarrítmica',
-    medicamentos: [],
-    examenes: [],
-    notas: 'Paciente estable, continuar tratamiento',
-    archivosAdjuntos: []
+    patientId: '1',
+    doctorId: '1',
+    date: '2024-01-10',
+    reason: 'Control cardiológico',
+    symptoms: 'Palpitaciones ocasionales',
+    diagnosis: 'Arritmia leve',
+    treatment: 'Medicación antiarrítmica',
+    medications: [],
+    exams: [],
+    notes: 'Paciente estable, continuar tratamiento',
+    attachments: []
   }
 ];
 
-export const mockRecetas: Receta[] = [
+export const mockRecetas: Prescription[] = [
   {
     id: '1',
-    pacienteId: '1',
-    medicoId: '1',
-    fecha: '2024-01-10',
-    numeroReceta: 'REC-001-2024',
-    medicamentos: [
+    patientId: '1',
+    doctorId: '1',
+    date: '2024-01-10',
+    prescriptionNumber: 'REC-001-2024',
+    medications: [
       {
-        nombre: 'Atenolol',
-        dosis: '50mg',
-        frecuencia: '1 vez al día',
-        duracion: '30 días',
-        indicaciones: 'Tomar en ayunas',
-        cantidad: 30
+        name: 'Atenolol',
+        dosage: '50mg',
+        frequency: '1 vez al día',
+        duration: '30 días',
+        indications: 'Tomar en ayunas',
+        quantity: 30
       }
     ],
-    indicaciones: 'Tomar medicamento según indicaciones médicas',
-    vigencia: '2024-02-10',
-    estado: 'Activa'
+    indications: 'Tomar medicamento según indicaciones médicas',
+    validity: '2024-02-10',
+    status: 'Active'
   }
 ];
 
-export const mockNotificaciones: Notificacion[] = [
+export const mockNotificaciones: Notification[] = [
   {
     id: '1',
-    tipo: 'Cita',
-    titulo: 'Recordatorio de Cita',
-    mensaje: 'Tiene una cita programada mañana a las 10:00 AM',
-    fecha: '2024-01-14T09:00:00Z',
-    leida: false,
-    prioridad: 'Media',
-    destinatario: 'user1',
-    accion: {
-      tipo: 'ver_cita',
+    type: 'Appointment',
+    title: 'Appointment Reminder',
+    message: 'You have a scheduled appointment tomorrow at 10:00 AM',
+    date: '2024-01-14T09:00:00Z',
+    read: false,
+    priority: 'Medium',
+    recipient: 'user1',
+    action: {
+      type: 'view_appointment',
       url: '/citas/1',
-      texto: 'Ver Cita'
+      text: 'View Appointment'
     }
   },
   {
     id: '2',
-    tipo: 'Sistema',
-    titulo: 'Actualización del Sistema',
-    mensaje: 'Nueva versión disponible con mejoras de seguridad',
-    fecha: '2024-01-13T15:30:00Z',
-    leida: true,
-    prioridad: 'Baja',
-    destinatario: 'all'
+    type: 'System',
+    title: 'System Update',
+    message: 'New version available with security improvements',
+    date: '2024-01-13T15:30:00Z',
+    read: true,
+    priority: 'Low',
+    recipient: 'all'
   }
 ];
 
-export const mockEstadisticas: EstadisticasDashboard = {
-  totalPacientes: 1247,
-  citasHoy: 23,
-  citasSemana: 156,
-  pacientesNuevos: 18,
-  ingresosMes: 125000,
-  medicamentosStock: 89,
-  alertasCriticas: 3,
-  satisfaccionPromedio: 4.7
+export const mockEstadisticas: DashboardStatistics = {
+  totalPatients: 1247,
+  appointmentsToday: 23,
+  appointmentsWeek: 156,
+  newPatients: 18,
+  monthlyIncome: 125000,
+  medicationsStock: 89,
+  criticalAlerts: 3,
+  averageSatisfaction: 4.7
 };
 
-// Datos para gráficos
+// Data for charts
 export const mockDatosCitas = [
-  { mes: 'Ene', citas: 120, completadas: 110 },
-  { mes: 'Feb', citas: 135, completadas: 125 },
-  { mes: 'Mar', citas: 148, completadas: 140 },
-  { mes: 'Abr', citas: 162, completadas: 155 },
-  { mes: 'May', citas: 178, completadas: 170 },
-  { mes: 'Jun', citas: 185, completadas: 175 }
+  { month: 'Jan', appointments: 120, completed: 110 },
+  { month: 'Feb', appointments: 135, completed: 125 },
+  { month: 'Mar', appointments: 148, completed: 140 },
+  { month: 'Apr', appointments: 162, completed: 155 },
+  { month: 'May', appointments: 178, completed: 170 },
+  { month: 'Jun', appointments: 185, completed: 175 }
 ];
 
 export const mockDatosIngresos = [
-  { mes: 'Ene', ingresos: 95000 },
-  { mes: 'Feb', ingresos: 108000 },
-  { mes: 'Mar', ingresos: 115000 },
-  { mes: 'Abr', ingresos: 122000 },
-  { mes: 'May', ingresos: 118000 },
-  { mes: 'Jun', ingresos: 125000 }
+  { month: 'Jan', income: 95000 },
+  { month: 'Feb', income: 108000 },
+  { month: 'Mar', income: 115000 },
+  { month: 'Apr', income: 122000 },
+  { month: 'May', income: 118000 },
+  { month: 'Jun', income: 125000 }
 ];
 
 export const mockDatosEspecialidades = [
-  { especialidad: 'Cardiología', pacientes: 245 },
-  { especialidad: 'Pediatría', pacientes: 189 },
-  { especialidad: 'Ginecología', pacientes: 167 },
-  { especialidad: 'Medicina General', pacientes: 312 },
-  { especialidad: 'Dermatología', pacientes: 134 }
+  { specialty: 'Cardiology', patients: 245 },
+  { specialty: 'Pediatrics', patients: 189 },
+  { specialty: 'Gynecology', patients: 167 },
+  { specialty: 'General Medicine', patients: 312 },
+  { specialty: 'Dermatology', patients: 134 }
 ];

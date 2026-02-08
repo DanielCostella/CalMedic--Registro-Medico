@@ -1,19 +1,5 @@
-// Simulación de servicio de autenticación
-export interface User {
-  id: string;
-  nombres: string;
-  apellidos: string;
-  email: string;
-  cedula: string;
-  rol: 'admin' | 'medico' | 'usuario';
-  especialidad?: string;
-  telefono?: string;
-}
-
-export interface LoginCredentials {
-  cedulaRif: string;
-  password: string;
-}
+import { supabase } from '../lib/supabase';
+import { User, LoginCredentials, RegisterData, RegisterDoctorData, UserRole } from '../types/user';
 
 export interface LoginResponse {
   success: boolean;
@@ -21,124 +7,176 @@ export interface LoginResponse {
   message?: string;
 }
 
-// Base de datos simulada de usuarios
-const usuarios: User[] = [
-  {
-    id: '1',
-    nombres: 'Juan Carlos',
-    apellidos: 'Pérez González',
-    email: 'admin@clinica.com',
-    cedula: 'V12345678',
-    rol: 'admin',
-    telefono: '+58 414-1234567'
-  },
-  {
-    id: '2', 
-    nombres: 'María Elena',
-    apellidos: 'López Rodríguez',
-    email: 'maria.lopez@clinica.com',
-    cedula: 'V87654321',
-    rol: 'medico',
-    especialidad: 'Cardiología',
-    telefono: '+58 424-9876543'
-  },
-  {
-    id: '3',
-    nombres: 'Ana Sofía',
-    apellidos: 'García Martínez',
-    email: 'ana.garcia@clinica.com', 
-    cedula: 'V11111111',
-    rol: 'usuario',
-    telefono: '+58 412-5555555'
-  },
-  {
-    id: '4',
-    nombres: 'Carlos Alberto',
-    apellidos: 'Mendoza Silva',
-    email: 'carlos.mendoza@clinica.com',
-    cedula: '11111111',
-    rol: 'medico',
-    especialidad: 'Medicina Interna',
-    telefono: '+58 416-1111111'
-  },
-  {
-    id: '5',
-    nombres: 'Ana Beatriz',
-    apellidos: 'Rodríguez López',
-    email: 'ana.rodriguez@clinica.com',
-    cedula: '22222222', 
-    rol: 'medico',
-    especialidad: 'Pediatría',
-    telefono: '+58 426-2222222'
-  },
-  {
-    id: '6',
-    nombres: 'Luis Fernando',
-    apellidos: 'García Pérez',
-    email: 'luis.garcia@clinica.com',
-    cedula: '33333333',
-    rol: 'medico',
-    especialidad: 'Neurología',
-    telefono: '+58 414-3333333'
-  },
-  {
-    id: '7',
-    nombres: 'María José',
-    apellidos: 'López Martínez',
-    email: 'maria.lopez2@clinica.com',
-    cedula: '44444444',
-    rol: 'medico',
-    especialidad: 'Ginecología',
-    telefono: '+58 424-4444444'
-  }
-];
-
-// Credenciales válidas (cedula -> password)
-const credenciales: Record<string, string> = {
-  'V12345678': 'admin123',
-  'V87654321': 'medico123',
-  'V11111111': 'usuario123',
-  '11111111': 'medico123',
-  '22222222': 'medico123', 
-  '33333333': 'medico123',
-  '44444444': 'medico123',
-  '12345678': 'Admin123',
-  '87654321': 'User123'
-};
-
 export const authService = {
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
-    // Simular delay de red
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const { cedulaRif, password } = credentials;
-    
-    // Verificar credenciales
-    if (!credenciales[cedulaRif] || credenciales[cedulaRif] !== password) {
+    try {
+      const { email, password } = credentials;
+
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        return {
+          success: false,
+          message: authError.message === 'Invalid login credentials'
+            ? 'Incorrect email or password'
+            : authError.message
+        };
+      }
+
+      if (!authData.user) {
+        return {
+          success: false,
+          message: 'User not found'
+        };
+      }
+
+      // Fetch profile data
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (profileError) {
+        return {
+          success: false,
+          message: 'Error fetching user profile'
+        };
+      }
+
+      const user: User = {
+        id: profile.id,
+        idType: profile.id_type,
+        nationalId: profile.national_id,
+        firstNames: profile.first_names,
+        lastNames: profile.last_names,
+        birthDate: profile.birth_date,
+        age: profile.age || 0,
+        gender: profile.gender,
+        mobilePhone: profile.mobile_phone,
+        email: profile.email,
+        address: profile.address,
+        birthPlace: profile.birth_place,
+        role: profile.role as UserRole,
+        createdAt: profile.created_at,
+      };
+
+      // If user is a Doctor, fetch doctor-specific data
+      if (user.role === 'Doctor') {
+        const { data: doctorData, error: doctorError } = await supabase
+          .from('doctors')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (!doctorError && doctorData) {
+          // Add doctor specific fields to the user object or handle as needed
+          // For now, let's just make sure we save the doctor data if needed
+          // or we can extend the User type to include optional Doctor fields
+          (user as any).doctorDetails = {
+            ...doctorData,
+            professionCategory: doctorData.profession_category // Ensure we map the category to camelCase if needed
+          };
+        }
+      }
+
+      authService.saveUser(user);
+
+      return {
+        success: true,
+        user
+      };
+    } catch (error: any) {
       return {
         success: false,
-        message: 'Credenciales incorrectas'
+        message: error.message || 'An unexpected error occurred'
       };
     }
-    
-    // Buscar usuario
-    const usuario = usuarios.find(u => u.cedula === cedulaRif);
-    
-    if (!usuario) {
-      return {
-        success: false,
-        message: 'Usuario no encontrado'
-      };
-    }
-    
-    return {
-      success: true,
-      user: usuario
-    };
   },
 
-  logout: () => {
-    // Limpiar datos de sesión si es necesario
+  registerDoctor: async (registerData: RegisterDoctorData): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const {
+        email, password, firstNames, lastNames, nationalId, idType,
+        medicalLicenseNumber, specialty, consultationFee,
+        degreeUniversity, graduationYear, yearsExperience, professionCategory, // Added
+        office // Added
+      } = registerData;
+
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_names: firstNames,
+            last_names: lastNames,
+            national_id: nationalId,
+            id_type: idType,
+            role: 'Doctor',
+            // Pass doctor specific data in metadata so the Trigger handles it
+            profession_category: professionCategory || 'Medical',
+            medical_license_number: medicalLicenseNumber || '',
+            specialty: specialty,
+            consultation_fee: consultationFee,
+            // Nuevos datos
+            degree_university: degreeUniversity || '',
+            graduation_year: graduationYear || '',
+            years_experience: yearsExperience,
+            office: office || ''
+          }
+        }
+      });
+
+      if (authError) {
+        return { success: false, message: authError.message };
+      }
+
+      // The Trigger (handle_new_user) will now create both the profile and the doctor record.
+      // We don't need to manually insert into 'doctors' anymore, avoiding the RLS issue.
+
+      if (!authData.user) {
+        return { success: false, message: 'Failed to create user' };
+      }
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    }
+  },
+
+  register: async (registerData: RegisterData): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const { email, password, firstNames, lastNames, nationalId, idType, role } = registerData;
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_names: firstNames,
+            last_names: lastNames,
+            national_id: nationalId,
+            id_type: idType,
+            role: role || 'User' // Default role
+          }
+        }
+      });
+
+      if (error) {
+        return { success: false, message: error.message };
+      }
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    }
+  },
+
+  logout: async () => {
+    await supabase.auth.signOut();
     localStorage.removeItem('user');
   },
 

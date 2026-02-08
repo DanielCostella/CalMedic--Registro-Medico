@@ -1,0 +1,53 @@
+{
+    "specialties": {
+        "generalMedicine": "Medicina General",
+        "pediatrics": "Pediatría",
+        "cardiology": "Cardiología",
+        "dermatology": "Dermatología",
+        "neurology": "Neurología",
+        "orthopedics": "Ortopedia",
+        "ophthalmology": "Oftalmología",
+        "dentistry": "Odontología",
+        "psychiatry": "Psiquiatría",
+        "gynecology": "Ginecología",
+        "surgery": "Cirugía",
+        "bariatrics": "Bariátrica",
+        "endocrinology": "Endocrinología",
+        "internalMedicine": "Medicina Interna"
+    },
+    "conditions": {
+        "diabetes": "Diabetes",
+        "hypertension": "Hipertensión",
+        "asthma": "Asma",
+        "obesity": "Obesidad",
+        "depression": "Depresión",
+        "anxiety": "Ansiedad"
+    },
+    "tests": {
+        "bloodTest": "Análisis de Sangre",
+        "urineTest": "Análisis de Orina",
+        "xray": "Rayos X",
+        "mri": "Resonancia Magnética",
+        "ct": "Tomografía",
+        "ultrasound": "Ecografía",
+        "ecg": "Electrocardiograma",
+        "bloodPressure": "Presión Arterial"
+    },
+    "medications": {
+        "tablet": "Tableta",
+        "capsule": "Cápsula",
+        "syrup": "Jarabe",
+        "injection": "Inyección",
+        "cream": "Crema",
+        "drops": "Gotas"
+    },
+    "vitalSigns": {
+        "bloodPressure": "Presión Arterial",
+        "heartRate": "Frecuencia Cardíaca",
+        "temperature": "Temperatura",
+        "weight": "Peso",
+        "height": "Altura",
+        "oxygenSaturation": "Saturación de Oxígeno",
+        "respiratoryRate": "Frecuencia Respiratoria"
+    }
+}

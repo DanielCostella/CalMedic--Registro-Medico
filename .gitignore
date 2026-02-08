@@ -22,3 +22,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Environment & Secrets (CRITICAL)
+.env
+.env.*
+
+# Backend / Database Files (Ignored for Frontend Repo)
+supabase/
+*.sql
+*.pdf
+manuales/
+todo.md
+wiki.md
+
+# Build
+coverage/
+TRASH/

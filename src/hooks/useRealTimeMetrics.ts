@@ -1,24 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
 
 interface Metrics {
-  pacientesTotal: number;
-  citasHoy: number;
-  recetasEmitidas: number;
-  ingresosMes: number;
-  pacientesNuevos: number;
-  citasSemana: number;
-  satisfaccionPromedio: number;
+  totalPatients: number;
+  appointmentsToday: number;
+  prescriptionsIssued: number;
+  monthlyIncome: number;
+  newPatients: number;
+  weeklyAppointments: number;
+  averageSatisfaction: number;
   lastUpdate: string;
 }
 
 const initialMetrics: Metrics = {
-  pacientesTotal: 156,
-  citasHoy: 8,
-  recetasEmitidas: 23,
-  ingresosMes: 18750,
-  pacientesNuevos: 12,
-  citasSemana: 42,
-  satisfaccionPromedio: 4.8,
+  totalPatients: 156,
+  appointmentsToday: 8,
+  prescriptionsIssued: 23,
+  monthlyIncome: 18750,
+  newPatients: 12,
+  weeklyAppointments: 42,
+  averageSatisfaction: 4.8,
   lastUpdate: new Date().toISOString()
 };
 
@@ -33,17 +33,17 @@ export const useRealTimeMetrics = (updateInterval: number = 30000) => {
 
   const updateMetrics = useCallback(() => {
     setIsUpdating(true);
-    
-    // Simular delay de actualización
+
+    // Simulate update delay
     setTimeout(() => {
       setMetrics(prev => ({
-        pacientesTotal: generateRandomChange(prev.pacientesTotal, 2),
-        citasHoy: generateRandomChange(prev.citasHoy, 1),
-        recetasEmitidas: generateRandomChange(prev.recetasEmitidas, 3),
-        ingresosMes: generateRandomChange(prev.ingresosMes, 500),
-        pacientesNuevos: generateRandomChange(prev.pacientesNuevos, 1),
-        citasSemana: generateRandomChange(prev.citasSemana, 2),
-        satisfaccionPromedio: Math.max(3.0, Math.min(5.0, prev.satisfaccionPromedio + (Math.random() - 0.5) * 0.2)),
+        totalPatients: generateRandomChange(prev.totalPatients, 2),
+        appointmentsToday: generateRandomChange(prev.appointmentsToday, 1),
+        prescriptionsIssued: generateRandomChange(prev.prescriptionsIssued, 3),
+        monthlyIncome: generateRandomChange(prev.monthlyIncome, 500),
+        newPatients: generateRandomChange(prev.newPatients, 1),
+        weeklyAppointments: generateRandomChange(prev.weeklyAppointments, 2),
+        averageSatisfaction: Math.max(3.0, Math.min(5.0, prev.averageSatisfaction + (Math.random() - 0.5) * 0.2)),
         lastUpdate: new Date().toISOString()
       }));
       setIsUpdating(false);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 import { User, Calendar, FileText, CreditCard, Bell, MessageCircle, Video, Upload, Heart, Pill, Activity, Download, Eye, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -139,22 +140,116 @@ const PortalPacientes: React.FC = () => {
   });
 
   useEffect(() => {
-    // Simular carga de datos del paciente
-    setTimeout(() => {
-      const pacienteData: Paciente = {
-        id: '1',
-        nombre: 'María',
-        apellido: 'González',
-        cedula: '1234567890',
-        email: 'maria.gonzalez@email.com',
-        telefono: '+1234567890',
-        fechaNacimiento: '1985-03-15',
-        genero: 'Femenino',
-        seguroMedico: 'Seguros Universales',
-        numeroPoliza: 'SU-123456789'
-      };
+    const loadPatientData = async () => {
+      try {
+        setLoading(true);
+        const { data: { user } } = await supabase.auth.getUser();
 
-      const resultadosData: ResultadoExamen[] = [
+        if (!user) {
+          // Demo/Mock Fallback logic
+          setTimeout(() => {
+             const userStr = localStorage.getItem('currentUser');
+             const user = userStr ? JSON.parse(userStr) : null;
+             
+             if (user) {
+                setPaciente({
+                  id: user.id || '1',
+                  nombre: user.firstNames || 'Paciente',
+                  apellido: user.lastNames || '',
+                  cedula: user.nationalId || '',
+                  email: user.email || '',
+                  telefono: user.mobilePhone || '',
+                  fechaNacimiento: user.birthDate || new Date().toISOString().split('T')[0],
+                  genero: user.gender === 'Male' ? 'Masculino' : 'Femenino',
+                  seguroMedico: 'Por definir',
+                  numeroPoliza: ''
+                });
+             } else {
+                 setPaciente({ id: '1', nombre: 'Invitado', apellido: '', cedula: '', email: '', telefono: '', fechaNacimiento: '', genero: 'Femenino', seguroMedico: '', numeroPoliza: '' });
+             }
+             setLoading(false);
+          }, 500);
+          return;
+        }
+
+        // Real Data Logic
+        let { data: patientData } = await supabase
+          .from('patients')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+         // Rescue attempt by National ID if link is missing
+        if (!patientData) {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('national_id')
+              .eq('id', user.id)
+              .single();
+            
+            if (profile?.national_id) {
+               const { data: pByCedula } = await supabase
+                 .from('patients')
+                 .select('*')
+                 .eq('national_id', profile.national_id)
+                 .single();
+               
+               if (pByCedula) {
+                 patientData = pByCedula;
+                 // Self-repair: Link the user now
+                 supabase.from('patients').update({ user_id: user.id }).eq('id', patientData.id).then();
+               }
+            }
+        }
+
+        if (patientData) {
+          setPaciente({
+            id: patientData.id,
+            nombre: patientData.first_name,
+            apellido: patientData.last_name,
+            cedula: patientData.national_id,
+            email: patientData.email || user.email || '',
+            telefono: patientData.phone || '',
+            fechaNacimiento: patientData.birth_date || '',
+            genero: patientData.gender === 'Male' ? 'Masculino' : 'Femenino',
+            seguroMedico: patientData.medical_insurance || 'No registrado',
+            numeroPoliza: ''
+          });
+        } else {
+           // Fallback to minimal profile data if no patient record exists
+           const { data: profile } = await supabase
+             .from('profiles')
+             .select('*')
+             .eq('id', user.id)
+             .single();
+            
+           if (profile) {
+              setPaciente({
+                id: profile.id,
+                nombre: profile.first_names,
+                apellido: profile.last_names,
+                cedula: profile.national_id,
+                email: profile.email,
+                telefono: profile.mobile_phone || '',
+                fechaNacimiento: profile.birth_date || '',
+                genero: profile.gender === 'Male' ? 'Masculino' : 'Femenino',
+                seguroMedico: 'No registrado',
+                numeroPoliza: ''
+              });
+           }
+        }
+        
+      } catch (error) {
+        console.error("Error loading patient data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPatientData();
+
+    // MOCK DATA LOADING FOR SUB-COMPONENTS
+    const resultadosData: ResultadoExamen[] = [
         {
           id: '1',
           fecha: '2024-01-15',
@@ -381,14 +476,13 @@ const PortalPacientes: React.FC = () => {
         }
       ];
 
-      setPaciente(pacienteData);
+      // setPaciente(pacienteData); 
       setResultadosExamenes(resultadosData);
       setRecetas(recetasData);
       setCitas(citasData);
       setFacturas(facturasData);
       setMedicos(medicosData);
-      setLoading(false);
-    }, 1000);
+
   }, []);
 
   const solicitarCita = () => {

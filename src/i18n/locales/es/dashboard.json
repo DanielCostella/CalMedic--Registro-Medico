@@ -1,0 +1,43 @@
+{
+    "welcome": "¡Bienvenido, {{name}}!",
+    "title": "Panel del Médico",
+    "subtitle": "Gestiona tu salud de manera fácil y segura",
+    "metrics": {
+        "activePatients": "Pacientes Activos",
+        "todayAppointments": "Citas de Hoy",
+        "monthlyRevenue": "Ingresos Mensuales",
+        "averageSatisfaction": "Satisfacción Promedio",
+        "prescriptionsIssued": "Recetas Emitidas",
+        "generatedIncome": "Ingresos Generados"
+    },
+    "sections": {
+        "quickActions": "Acciones Rápidas",
+        "todaySchedule": "Agenda de Hoy",
+        "upcomingActivities": "Próximas Actividades",
+        "alerts": "Alertas Importantes",
+        "weeklySummary": "Resumen Semanal"
+    },
+    "actions": {
+        "managePatients": "Gestionar Pacientes",
+        "scheduleAppointment": "Agendar Cita",
+        "createPrescription": "Crear Receta",
+        "viewReports": "Ver Reportes",
+        "advancedSearch": "Búsqueda Avanzada",
+        "medicalChatbot": "Chatbot Médico"
+    },
+    "appointments": {
+        "scheduled": "Programada",
+        "confirmed": "Confirmada",
+        "inProgress": "En Curso",
+        "completed": "Completada",
+        "cancelled": "Cancelada",
+        "attend": "Atender",
+        "complete": "Completar",
+        "noAppointments": "No hay pacientes programados para hoy",
+        "pendingToday": "Tienes {{count}} pacientes pendientes de atender hoy"
+    },
+    "alerts": {
+        "updateHistory": "Recuerda actualizar el historial médico de los pacientes atendidos",
+        "newModules": "¡Nuevos módulos disponibles! Explora herramientas avanzadas de notificación, búsqueda y gráficos"
+    }
+}

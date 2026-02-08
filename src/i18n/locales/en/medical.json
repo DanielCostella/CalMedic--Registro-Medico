@@ -1,0 +1,53 @@
+{
+    "specialties": {
+        "generalMedicine": "General Medicine",
+        "pediatrics": "Pediatrics",
+        "cardiology": "Cardiology",
+        "dermatology": "Dermatology",
+        "neurology": "Neurology",
+        "orthopedics": "Orthopedics",
+        "ophthalmology": "Ophthalmology",
+        "dentistry": "Dentistry",
+        "psychiatry": "Psychiatry",
+        "gynecology": "Gynecology",
+        "surgery": "Surgery",
+        "bariatrics": "Bariatrics",
+        "endocrinology": "Endocrinology",
+        "internalMedicine": "Internal Medicine"
+    },
+    "conditions": {
+        "diabetes": "Diabetes",
+        "hypertension": "Hypertension",
+        "asthma": "Asthma",
+        "obesity": "Obesity",
+        "depression": "Depression",
+        "anxiety": "Anxiety"
+    },
+    "tests": {
+        "bloodTest": "Blood Test",
+        "urineTest": "Urine Test",
+        "xray": "X-Ray",
+        "mri": "MRI",
+        "ct": "CT Scan",
+        "ultrasound": "Ultrasound",
+        "ecg": "ECG",
+        "bloodPressure": "Blood Pressure"
+    },
+    "medications": {
+        "tablet": "Tablet",
+        "capsule": "Capsule",
+        "syrup": "Syrup",
+        "injection": "Injection",
+        "cream": "Cream",
+        "drops": "Drops"
+    },
+    "vitalSigns": {
+        "bloodPressure": "Blood Pressure",
+        "heartRate": "Heart Rate",
+        "temperature": "Temperature",
+        "weight": "Weight",
+        "height": "Height",
+        "oxygenSaturation": "Oxygen Saturation",
+        "respiratoryRate": "Respiratory Rate"
+    }
+}

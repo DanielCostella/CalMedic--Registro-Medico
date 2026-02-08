@@ -1,0 +1,97 @@
+{
+    "portal": {
+        "title": "Portal de Pacientes",
+        "subtitle": "Sistema Médico Integral",
+        "welcome": "¡Bienvenida, {{name}}!",
+        "manageHealth": "Gestiona tu salud de manera fácil y segura"
+    },
+    "tabs": {
+        "dashboard": "Panel",
+        "appointments": "Citas",
+        "tests": "Exámenes",
+        "prescriptions": "Recetas",
+        "payments": "Pagos",
+        "profile": "Perfil"
+    },
+    "quickStats": {
+        "nextAppointment": "Próxima Cita",
+        "activePrescriptions": "Recetas Activas",
+        "medications": "Medicamentos",
+        "tests": "Exámenes",
+        "results": "Resultados",
+        "invoices": "Facturas",
+        "pending": "Pendientes"
+    },
+    "appointments": {
+        "myAppointments": "Mis Citas",
+        "requestAppointment": "Solicitar Cita",
+        "selectDoctor": "Seleccionar Médico",
+        "selectTime": "Seleccionar hora",
+        "modality": "Modalidad",
+        "inPerson": "Presencial",
+        "virtual": "Virtual",
+        "reason": "Motivo de Consulta",
+        "cost": "Costo",
+        "office": "Consultorio",
+        "videoLink": "Enlace de video",
+        "join": "Unirse",
+        "cancel": "Cancelar",
+        "confirmCancel": "¿Está seguro de que desea cancelar esta cita?",
+        "requestSuccess": "Cita solicitada exitosamente. Recibirá confirmación por correo electrónico.",
+        "noAvailableHours": "No hay horas disponibles"
+    },
+    "tests": {
+        "testResults": "Resultados de Exámenes",
+        "uploadDocument": "Subir Documento",
+        "laboratory": "Laboratorio",
+        "doctor": "Médico",
+        "observations": "Observaciones",
+        "normalRange": "Normal",
+        "date": "Fecha"
+    },
+    "prescriptions": {
+        "medicalPrescriptions": "Recetas Médicas",
+        "validUntil": "Válida hasta",
+        "dosage": "Dosis",
+        "frequency": "Frecuencia",
+        "duration": "Duración",
+        "route": "Vía",
+        "instructions": "Indicaciones",
+        "dispensed": "Dispensado",
+        "pending": "Pendiente"
+    },
+    "payments": {
+        "invoicesAndPayments": "Facturas y Pagos",
+        "payNow": "Pagar Ahora",
+        "receipt": "Recibo",
+        "dueDate": "Fecha de vencimiento",
+        "paymentMethod": "Método de pago",
+        "transaction": "Transacción",
+        "processPayment": "Procesar Pago",
+        "cardType": "Tipo de Tarjeta",
+        "cardNumber": "Número de Tarjeta",
+        "cardholderName": "Nombre del Titular",
+        "expirationDate": "Fecha de Expiración",
+        "paymentSuccess": "Pago procesado exitosamente. Recibirá el comprobante por correo electrónico."
+    },
+    "profile": {
+        "myProfile": "Mi Perfil",
+        "personalInfo": "Información Personal",
+        "insuranceInfo": "Información del Seguro",
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "nationalId": "Cédula",
+        "birthDate": "Fecha de Nacimiento",
+        "gender": "Género",
+        "insurance": "Proveedor de Seguro",
+        "policyNumber": "Número de Póliza",
+        "editProfile": "Editar Perfil",
+        "changePassword": "Cambiar Contraseña"
+    },
+    "quickAccess": {
+        "title": "Accesos Rápidos",
+        "viewTests": "Ver Exámenes",
+        "myPrescriptions": "Mis Recetas",
+        "payInvoices": "Pagar Facturas"
+    }
+}

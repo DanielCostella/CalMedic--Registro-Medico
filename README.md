@@ -1,260 +1,89 @@
-# Sistema Médico Integral - MediComGX
+# 🏥 CalMedic - Sistema de Gestión Médica Integral (SaaS)
 
-🏥 **Sistema médico completo** desarrollado con React, TypeScript y Tailwind CSS que proporciona dashboards personalizados para 6 especialidades médicas diferentes, cada una con sus propias agendas, pacientes y funcionalidades específicas. Incluye funcionalidades completas de atención médica, gestión de pacientes, recetas, informes y comunicación integrada.
+**CalMedic** es una solución SaaS moderna diseñada para optimizar la gestión sanitaria, conectando a pacientes, médicos e instituciones en una plataforma unificada. Este repositorio contiene el **Frontend** de la aplicación, desarrollado con tecnologías de última generación para asegurar velocidad, escalabilidad y una experiencia de usuario fluida.
 
-## ✨ Funcionalidades Principales
-
-### 🔐 Autenticación y Usuarios
-- Login por especialidad médica con 6 médicos especialistas
-- Contraseña demo: `123456` para todos los médicos
-- Persistencia de sesión con localStorage
-- Redirección automática según el rol del usuario
-
-### 👨‍⚕️ Médicos Especialistas Disponibles
-- **Dr. Juan Pérez** - Medicina General (247 pacientes)
-- **Dra. María González** - Odontología (189 pacientes)
-- **Dr. Carlos Rodríguez** - Pediatría (156 pacientes)
-- **Dra. Ana Martínez** - Oftalmología (134 pacientes)
-- **Dr. Luis Fernández** - Cirugía General (98 pacientes)
-- **Dr. Roberto Silva** - Cirugía Bariátrica (67 pacientes)
-
-### 📅 Dashboard Médico Personalizado
-- Agenda diaria específica por especialidad
-- Estadísticas en tiempo real: citas del día, pacientes activos, próximas citas
-- Lista de pacientes recientes con historial médico completo
-- Sistema de prioridades (Alta, Media, Baja)
-- Estados de citas: Confirmada, Pendiente, Completada, Cancelada
-
-### 🩺 Sistema de Atención de Pacientes
-Modal de consulta expandido con 4 pestañas funcionales:
-
-#### 📋 Consulta
-- Información completa del paciente (nombre, edad, condición, contacto)
-- Signos vitales interactivos (presión arterial, frecuencia cardíaca, temperatura, peso, altura, saturación O2)
-- Sistema de archivos adjuntos - Subir RX, análisis, imágenes (PDF, JPG, PNG, DOC)
-- Notas de consulta con editor de texto completo
-- Botones de acción: Guardar consulta, Generar informe médico
-
-#### 📚 Historial Médico
-- Historial médico completo del paciente seleccionado
-- Alergias conocidas con alertas visuales
-- Medicamentos actuales del paciente
-- Notas médicas previas de consultas anteriores
-- Archivos del paciente organizados por tipo (PDF, imágenes, documentos)
-
-#### 💊 Recetas Médicas
-- Generador de recetas médicas con información del paciente
-- Alertas de alergias antes de prescribir
-- Editor de prescripciones con formato médico
-- Funciones: Generar receta, Imprimir, Enviar al paciente
-- Validación automática de datos del paciente y médico
-
-#### 📞 Comunicación
-- Llamadas telefónicas simuladas con interfaz realista
-- Videollamadas con simulación visual completa
-- Sistema de mensajes bidireccional paciente-médico
-- Historial de comunicaciones previas
-
-### 👥 Gestión de Pacientes
-- Registro de nuevos pacientes con formulario completo
-- Historial médico detallado por paciente
-- Visualización de archivos adjuntos por paciente
-- Sistema de búsqueda de pacientes
-- Información de contacto completa
-
-### 📅 Programación de Citas
-- Crear nuevas citas con formulario interactivo
-- Selección de fecha y hora con validación
-- Tipos de consulta personalizables
-- Duración configurable de citas
-- Estado automático de citas programadas
-
-### 📄 Generación de Documentos Médicos
-- Recetas médicas con formato profesional
-- Informes médicos detallados
-- Exportación de documentos (PDF simulado)
-- Envío automático a pacientes
-- Impresión directa de documentos
-
-### 📎 Sistema de Archivos Médicos
-- Subida de múltiples archivos (RX, análisis, imágenes)
-- Formatos soportados: PDF, JPG, PNG, DOC, DOCX
-- Organización por paciente y fecha
-- Visualización de archivos existentes
-- Gestión de attachments por consulta
-
-### 🤖 Asistente Virtual Médico
-- Chatbot inteligente con respuestas contextuales médicas
-- Minimizar/Maximizar funcional
-- Scroll automático en conversaciones
-- Badges de acceso rápido para consultas comunes
-- Control de activación programático (oculto por defecto)
-
-### 📱 Diseño Responsive
-- Optimizado para móvil con breakpoints adaptativos
-- Navegación táctil mejorada
-- Modales responsivos para diferentes pantallas
-- Formularios adaptativos móvil/desktop
-- Scroll areas optimizadas
-
-## 🚀 Tecnologías Utilizadas
-
-- **Frontend:** React 19.1.1 + TypeScript
-- **Styling:** Tailwind CSS + shadcn/ui
-- **Routing:** React Router DOM
-- **Icons:** Lucide React (expandido con iconos médicos)
-- **Build:** Vite 5.4.1
-- **Package Manager:** pnpm 8.10.0
-- **State Management:** React Hooks + localStorage
-
-## 📊 Métricas del Sistema
-
-- **Especialidades médicas:** 6 implementadas completamente
-- **Pacientes totales:** 891 con historiales completos
-- **Citas programadas:** 48+ con datos médicos reales
-- **Bundle optimizado:** ~900 kB (210 kB gzipped)
-- **Tiempo de build:** ~8 segundos
-- **Estado:** 100% funcional - Todas las funcionalidades médicas operativas
-
-## 🛠️ Instalación y Uso
-
-```bash
-# Instalar dependencias
-pnpm install
-
-# Ejecutar en desarrollo
-pnpm run dev
-
-# Construir para producción
-pnpm run build
-
-# Vista previa de producción
-pnpm run preview
-```
-
-## 🌐 Acceso al Sistema
-
-- **URL:** http://localhost:5173/ (desarrollo)
-- **Login:** Seleccionar cualquier médico especialista
-- **Contraseña:** 123456
-- **Dashboard:** Acceso automático a funcionalidades completas
-
-## 📋 Estructura del Proyecto
-
-```
-src/
-├── components/
-│   ├── auth/                    # Componentes de autenticación
-│   ├── charts/                  # Gráficos y visualizaciones
-│   ├── dashboard/               # Dashboards médicos
-│   ├── layout/                  # Layouts y navegación
-│   ├── medicos/                 # Componentes específicos médicos
-│   │   ├── modules/            # Módulos por especialidad
-│   │   └── components/         # Componentes médicos generales
-│   └── ui/                     # Componentes base shadcn/ui
-├── contexts/                   # Contextos React
-├── data/                       # Datos mock y configuración
-├── hooks/                      # Hooks personalizados
-├── lib/                        # Utilidades y servicios
-├── pages/                      # Páginas principales
-├── services/                   # Servicios API
-├── types/                      # Definiciones TypeScript
-└── utils/                      # Utilidades auxiliares
-```
-
-## 🎯 Funcionalidades Médicas Implementadas
-
-### ✅ Sistema de Consultas Médicas
-- Atención completa de pacientes
-- Registro de signos vitales
-- Notas de consulta detalladas
-- Guardado automático de consultas
-- Historial médico por paciente
-
-### ✅ Gestión de Archivos Médicos
-- Subida de RX y análisis
-- Adjuntar imágenes médicas
-- Organización por paciente
-- Visualización de archivos existentes
-- Soporte múltiples formatos
-
-### ✅ Recetas y Prescripciones
-- Generador de recetas médicas
-- Validación de alergias
-- Formato médico profesional
-- Envío automático a pacientes
-- Impresión de recetas
-
-### ✅ Informes Médicos
-- Generación automática de informes
-- Datos completos del paciente
-- Signos vitales incluidos
-- Diagnósticos y recomendaciones
-- Exportación de documentos
-
-### ✅ Registro de Pacientes
-- Formulario completo de registro
-- Información médica detallada
-- Historial y alergias
-- Datos de contacto
-- Validación de campos
-
-### ✅ Programación de Citas
-- Crear nuevas citas médicas
-- Selección de fecha/hora
-- Tipos de consulta
-- Duración configurable
-- Estados de cita automáticos
-
-### ✅ Comunicación Médica
-- Llamadas telefónicas simuladas
-- Videollamadas médicas
-- Sistema de mensajería
-- Historial de comunicaciones
-- Interfaz realista de llamadas
-
-## 🚀 Próximas Implementaciones Sugeridas
-
-### 📈 Funcionalidades Avanzadas
-- Sistema de Notificaciones Push - Alertas en tiempo real
-- Calendario Médico Interactivo - Vista mensual/semanal de citas
-- Reportes y Analytics - Estadísticas médicas y de pacientes
-- Integración con Laboratorios - Recepción automática de resultados
-
-### 🔗 Integraciones Externas
-- Sistemas Hospitalarios (HIS) - Conexión con bases de datos médicas
-- Farmacia Digital - Envío directo de recetas
-- Seguros Médicos - Validación automática de coberturas
-- Telemedicina Real - Videollamadas con WebRTC
-
-### 📱 Aplicaciones Móviles
-- App Nativa para Médicos - iOS/Android con React Native
-- App para Pacientes - Portal móvil de autogestión
-- Sincronización Offline - Funcionamiento sin internet
-- Notificaciones Push Nativas - Alertas móviles
-
-### 🔒 Seguridad y Compliance
-- Cumplimiento HIPAA - Estándares de privacidad médica
-- Encriptación de Datos - End-to-end para información sensible
-- Auditoría Médica - Logs de acceso y modificaciones
-- Backup Automático - Respaldo de historiales médicos
-
-## 👥 Contribución
-
-Este proyecto está en desarrollo activo. Para contribuir:
-
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo LICENSE para más detalles.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-B73C9D?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Shadcn UI](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)
 
 ---
 
-🎉 **Estado del Proyecto:** COMPLETADO AL 100% - Sistema médico integral con TODAS las funcionalidades médicas operativas
+## 📸 Capturas de Pantalla
 
-**Desarrollado con ❤️ por el equipo MGX**
+*(Espacio reservado para capturas del Dashboard, Portal de Pacientes y Home)*
+
+| Dashboard Médico | Reserva de Turnos Online | Home Institucional |
+|:---:|:---:|:---:|
+| ![Dashboard](https://via.placeholder.com/400x200?text=Dashboard+Medico) | ![Reservas](https://via.placeholder.com/400x200?text=Reserva+Turnos) | ![Home](https://via.placeholder.com/400x200?text=Landing+Page) |
+
+---
+
+## 🚀 Características Principales
+
+### 👨‍⚕️ Para Especialistas y Centros Médicos
+*   **Gestión de Agenda:** Panel interactivo para administrar turnos, bloqueos de horarios y sobreturnos.
+*   **Historia Clínica Digital:** Registro seguro de pacientes, antecedentes y evoluciones.
+*   **Dashboard Financiero:** Métricas de rendimiento, ingresos por consultas y estadísticas de atención.
+*   **Gestión de Perfil:** Personalización de horarios de atención, precios y especialidades (Médicas y Estéticas).
+
+### 🙋‍♀️ Para Pacientes
+*   **Reserva Online 24/7:** Sistema público de turnos con filtros por especialidad, profesional y obra social.
+*   **Portal de Pacientes:** Acceso a historial de turnos y gestión de datos personales.
+*   **Recordatorios:** Integración para notificaciones automáticas.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+*   **Frontend Framework:** React 18 + TypeScript
+*   **Build Tool:** Vite
+*   **Estilos:** Tailwind CSS
+*   **Componentes UI:** Shadcn/ui + Lucide Icons
+*   **Gestión de Estado:** React Query (TanStack Query)
+*   **Enrutamiento:** React Router Dom
+*   **Integración Backend:** Supabase Client (Auth & Database connection)
+
+---
+
+## 📦 Instalación y Despliegue Local
+
+1.  **Clonar el repositorio**
+    ```bash
+    git clone https://github.com/DanielCostella/CalMedic--Registro-Medico.git
+    cd CalMedic--Registro-Medico
+    ```
+
+2.  **Instalar dependencias**
+    ```bash
+    npm install
+    # o
+    pnpm install
+    ```
+
+3.  **Configurar Variables de Entorno**
+    Crear un archivo `.env` basado en el template y agregar las credenciales de Supabase:
+    ```env
+    VITE_SUPABASE_URL=tu_url_supabase
+    VITE_SUPABASE_ANON_KEY=tu_key_supabase
+    ```
+
+4.  **Iniciar Servidor de Desarrollo**
+    ```bash
+    npm run dev
+    ```
+
+---
+
+## 📄 Estructura del Proyecto
+
+*   `/src/components`: Componentes reutilizables (UI, Layouts, Formularios).
+*   `/src/pages`: Vistas principales (AdminPage, DoctorDashboard, PublicBooking, etc.).
+*   `/src/services`: Lógica de conexión con Supabase.
+*   `/src/hooks`: Custom Hooks para lógica de negocio.
+*   `/src/types`: Definiciones de TypeScript.
+
+---
+
+**© 2026 CalMedic - Todos los derechos reservados.**

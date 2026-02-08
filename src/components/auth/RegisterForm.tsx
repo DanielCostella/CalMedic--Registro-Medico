@@ -7,9 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { authService } from '../../services/authService';
-import { RegisterData } from '../../types/user';
-import { calculateAge, validatePassword, validateEmail, validateCedula, validatePhone } from '../../utils/validation';
+import { authService } from '@/services/authService';
+import { RegisterData } from '@/types/user';
+import { calculateAge, validatePassword, validateEmail, validateNationalId, validatePhone } from '@/utils/validation';
 
 interface RegisterFormProps {
   onRegisterSuccess: () => void;
@@ -18,42 +18,42 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: RegisterFormProps) {
   const [formData, setFormData] = useState<RegisterData>({
-    rifInitial: 'V',
-    cedula: '',
-    nombres: '',
-    apellidos: '',
-    fechaNacimiento: '',
-    sexo: 'Femenino',
-    telefonoMovil: '',
-    correoElectronico: '',
-    direccion: '',
-    lugarNacimiento: '',
+    idType: 'V',
+    nationalId: '',
+    firstNames: '',
+    lastNames: '',
+    birthDate: '',
+    gender: 'Female',
+    mobilePhone: '',
+    email: '',
+    address: '',
+    birthPlace: '',
     password: ''
   });
-  
-  const [edad, setEdad] = useState<number>(0);
+
+  const [age, setAge] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (formData.fechaNacimiento) {
-      const calculatedAge = calculateAge(formData.fechaNacimiento);
-      setEdad(calculatedAge);
+    if (formData.birthDate) {
+      const calculatedAge = calculateAge(formData.birthDate);
+      setAge(calculatedAge);
     }
-  }, [formData.fechaNacimiento]);
+  }, [formData.birthDate]);
 
   const validateField = (field: string, value: string): string => {
     switch (field) {
-      case 'cedula': {
-        return !validateCedula(value) ? 'Cédula debe tener máximo 9 dígitos' : '';
+      case 'nationalId': {
+        return !validateNationalId(value) ? 'ID must have up to 9 digits' : '';
       }
-      case 'correoElectronico': {
-        return !validateEmail(value) ? 'Correo electrónico inválido' : '';
+      case 'email': {
+        return !validateEmail(value) ? 'Invalid email address' : '';
       }
-      case 'telefonoMovil': {
-        return !validatePhone(value) ? 'Teléfono debe tener exactamente 10 dígitos' : '';
+      case 'mobilePhone': {
+        return !validatePhone(value) ? 'Phone must have exactly 10 digits' : '';
       }
       case 'password': {
         const passwordValidation = validatePassword(value);
@@ -66,11 +66,8 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
 
   const handleInputChange = (field: keyof RegisterData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    
-    // Validar campo en tiempo real
     const fieldError = validateField(field, value);
     setFieldErrors(prev => ({ ...prev, [field]: fieldError }));
-    
     if (error) setError('');
   };
 
@@ -79,14 +76,12 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
     setLoading(true);
     setError('');
 
-    // Validar edad
-    if (edad < 18) {
-      setError('Debe ser mayor de 18 años para registrarse');
+    if (age < 18) {
+      setError('You must be at least 18 years old to register');
       setLoading(false);
       return;
     }
 
-    // Validar todos los campos
     const errors: Record<string, string> = {};
     Object.keys(formData).forEach(key => {
       const fieldError = validateField(key, formData[key as keyof RegisterData]);
@@ -95,7 +90,7 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
 
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
-      setError('Por favor corrija los errores en el formulario');
+      setError('Please correct the errors in the form');
       setLoading(false);
       return;
     }
@@ -105,10 +100,10 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
       if (result.success) {
         onRegisterSuccess();
       } else {
-        setError(result.message || 'Error al registrar usuario');
+        setError(result.message || 'Registration failed');
       }
     } catch (err) {
-      setError('Error de conexión. Intente nuevamente.');
+      setError('Connection error. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -125,18 +120,18 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
             className="absolute left-4 top-4 text-slate-600 hover:text-slate-800"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Volver
+            Back
           </Button>
-          
+
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-            <span className="text-white font-bold text-xl">EL</span>
+            <span className="text-white font-bold text-xl">CM</span>
           </div>
-          <CardTitle className="text-2xl font-bold text-slate-800">Crear Cuenta</CardTitle>
+          <CardTitle className="text-2xl font-bold text-slate-800">Create Account</CardTitle>
           <CardDescription className="text-slate-600">
-            Complete todos los campos para registrarse
+            Fill in all fields to register
           </CardDescription>
         </CardHeader>
-        
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
@@ -144,12 +139,12 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
                 <AlertDescription className="text-red-700">{error}</AlertDescription>
               </Alert>
             )}
-            
-            {/* RIF y Cédula */}
+
+            {/* ID Type and National ID */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label className="text-slate-700">Inicial RIF</Label>
-                <Select value={formData.rifInitial} onValueChange={(value: 'V' | 'E' | 'J' | 'P' | 'G' | 'M') => handleInputChange('rifInitial', value)}>
+                <Label className="text-slate-700">ID Type</Label>
+                <Select value={formData.idType} onValueChange={(value: 'V' | 'E' | 'J' | 'P' | 'G' | 'M') => handleInputChange('idType', value)}>
                   <SelectTrigger className="border-slate-200 focus:border-blue-500">
                     <SelectValue />
                   </SelectTrigger>
@@ -163,159 +158,159 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="cedula" className="text-slate-700">Cédula</Label>
+                <Label htmlFor="nationalId" className="text-slate-700">National ID</Label>
                 <Input
-                  id="cedula"
+                  id="nationalId"
                   type="text"
                   placeholder="12345678"
                   maxLength={9}
-                  value={formData.cedula}
-                  onChange={(e) => handleInputChange('cedula', e.target.value.replace(/\D/g, ''))}
-                  className={`border-slate-200 focus:border-blue-500 ${fieldErrors.cedula ? 'border-red-300' : ''}`}
+                  value={formData.nationalId}
+                  onChange={(e) => handleInputChange('nationalId', e.target.value.replace(/\D/g, ''))}
+                  className={`border-slate-200 focus:border-blue-500 ${fieldErrors.nationalId ? 'border-red-300' : ''}`}
                   required
                 />
-                {fieldErrors.cedula && <p className="text-sm text-red-600">{fieldErrors.cedula}</p>}
+                {fieldErrors.nationalId && <p className="text-sm text-red-600">{fieldErrors.nationalId}</p>}
               </div>
             </div>
 
-            {/* Nombres y Apellidos */}
+            {/* First and Last Names */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="nombres" className="text-slate-700">Nombres</Label>
+                <Label htmlFor="firstNames" className="text-slate-700">First Names</Label>
                 <Input
-                  id="nombres"
+                  id="firstNames"
                   type="text"
-                  placeholder="Juan Carlos"
-                  value={formData.nombres}
-                  onChange={(e) => handleInputChange('nombres', e.target.value)}
+                  placeholder="John Doe"
+                  value={formData.firstNames}
+                  onChange={(e) => handleInputChange('firstNames', e.target.value)}
                   className="border-slate-200 focus:border-blue-500"
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
-                <Label htmlFor="apellidos" className="text-slate-700">Apellidos</Label>
+                <Label htmlFor="lastNames" className="text-slate-700">Last Names</Label>
                 <Input
-                  id="apellidos"
+                  id="lastNames"
                   type="text"
-                  placeholder="Pérez García"
-                  value={formData.apellidos}
-                  onChange={(e) => handleInputChange('apellidos', e.target.value)}
+                  placeholder="Smith Jones"
+                  value={formData.lastNames}
+                  onChange={(e) => handleInputChange('lastNames', e.target.value)}
                   className="border-slate-200 focus:border-blue-500"
                   required
                 />
               </div>
             </div>
 
-            {/* Fecha de Nacimiento, Edad y Sexo */}
+            {/* Birth Date, Age and Gender */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="fechaNacimiento" className="text-slate-700">Fecha de Nacimiento</Label>
+                <Label htmlFor="birthDate" className="text-slate-700">Birth Date</Label>
                 <Input
-                  id="fechaNacimiento"
+                  id="birthDate"
                   type="date"
-                  value={formData.fechaNacimiento}
-                  onChange={(e) => handleInputChange('fechaNacimiento', e.target.value)}
+                  value={formData.birthDate}
+                  onChange={(e) => handleInputChange('birthDate', e.target.value)}
                   className="border-slate-200 focus:border-blue-500"
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
-                <Label className="text-slate-700">Edad</Label>
+                <Label className="text-slate-700">Age</Label>
                 <Input
                   type="text"
-                  value={edad > 0 ? `${edad} años` : ''}
+                  value={age > 0 ? `${age} years` : ''}
                   readOnly
-                  className={`border-slate-200 bg-slate-50 ${edad < 18 ? 'border-red-300 bg-red-50' : ''}`}
+                  className={`border-slate-200 bg-slate-50 ${age < 18 ? 'border-red-300 bg-red-50' : ''}`}
                 />
-                {edad > 0 && edad < 18 && (
-                  <p className="text-sm text-red-600">Debe ser mayor de 18 años</p>
+                {age > 0 && age < 18 && (
+                  <p className="text-sm text-red-600">Must be at least 18</p>
                 )}
               </div>
-              
+
               <div className="space-y-2">
-                <Label className="text-slate-700">Sexo</Label>
-                <Select value={formData.sexo} onValueChange={(value: 'Femenino' | 'Masculino') => handleInputChange('sexo', value)}>
+                <Label className="text-slate-700">Gender</Label>
+                <Select value={formData.gender} onValueChange={(value: 'Female' | 'Male') => handleInputChange('gender', value)}>
                   <SelectTrigger className="border-slate-200 focus:border-blue-500">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Femenino">Femenino</SelectItem>
-                    <SelectItem value="Masculino">Masculino</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                    <SelectItem value="Male">Male</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            {/* Teléfono y Correo */}
+            {/* Phone and Email */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="telefonoMovil" className="text-slate-700">Teléfono Móvil</Label>
+                <Label htmlFor="mobilePhone" className="text-slate-700">Mobile Phone</Label>
                 <Input
-                  id="telefonoMovil"
+                  id="mobilePhone"
                   type="text"
                   placeholder="4141234567"
                   maxLength={10}
-                  value={formData.telefonoMovil}
-                  onChange={(e) => handleInputChange('telefonoMovil', e.target.value.replace(/\D/g, ''))}
-                  className={`border-slate-200 focus:border-blue-500 ${fieldErrors.telefonoMovil ? 'border-red-300' : ''}`}
+                  value={formData.mobilePhone}
+                  onChange={(e) => handleInputChange('mobilePhone', e.target.value.replace(/\D/g, ''))}
+                  className={`border-slate-200 focus:border-blue-500 ${fieldErrors.mobilePhone ? 'border-red-300' : ''}`}
                   required
                 />
-                {fieldErrors.telefonoMovil && <p className="text-sm text-red-600">{fieldErrors.telefonoMovil}</p>}
+                {fieldErrors.mobilePhone && <p className="text-sm text-red-600">{fieldErrors.mobilePhone}</p>}
               </div>
-              
+
               <div className="space-y-2">
-                <Label htmlFor="correoElectronico" className="text-slate-700">Correo Electrónico</Label>
+                <Label htmlFor="email" className="text-slate-700">Email Address</Label>
                 <Input
-                  id="correoElectronico"
+                  id="email"
                   type="email"
-                  placeholder="usuario@ejemplo.com"
-                  value={formData.correoElectronico}
-                  onChange={(e) => handleInputChange('correoElectronico', e.target.value)}
-                  className={`border-slate-200 focus:border-blue-500 ${fieldErrors.correoElectronico ? 'border-red-300' : ''}`}
+                  placeholder="user@example.com"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  className={`border-slate-200 focus:border-blue-500 ${fieldErrors.email ? 'border-red-300' : ''}`}
                   required
                 />
-                {fieldErrors.correoElectronico && <p className="text-sm text-red-600">{fieldErrors.correoElectronico}</p>}
+                {fieldErrors.email && <p className="text-sm text-red-600">{fieldErrors.email}</p>}
               </div>
             </div>
 
-            {/* Dirección y Lugar de Nacimiento */}
+            {/* Address and Birth Place */}
             <div className="space-y-2">
-              <Label htmlFor="direccion" className="text-slate-700">Dirección</Label>
+              <Label htmlFor="address" className="text-slate-700">Address</Label>
               <Textarea
-                id="direccion"
-                placeholder="Av. Principal, Edificio..., Piso..., Apartamento..."
-                value={formData.direccion}
-                onChange={(e) => handleInputChange('direccion', e.target.value)}
+                id="address"
+                placeholder="Main St, Building, Floor..."
+                value={formData.address}
+                onChange={(e) => handleInputChange('address', e.target.value)}
                 className="border-slate-200 focus:border-blue-500 min-h-[80px]"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="lugarNacimiento" className="text-slate-700">Lugar de Nacimiento</Label>
+              <Label htmlFor="birthPlace" className="text-slate-700">Birth Place</Label>
               <Input
-                id="lugarNacimiento"
+                id="birthPlace"
                 type="text"
-                placeholder="Caracas, Venezuela"
-                value={formData.lugarNacimiento}
-                onChange={(e) => handleInputChange('lugarNacimiento', e.target.value)}
+                placeholder="City, Country"
+                value={formData.birthPlace}
+                onChange={(e) => handleInputChange('birthPlace', e.target.value)}
                 className="border-slate-200 focus:border-blue-500"
                 required
               />
             </div>
 
-            {/* Contraseña */}
+            {/* Password */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700">Contraseña</Label>
+              <Label htmlFor="password" className="text-slate-700">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Mínimo 8 caracteres, 1 mayúscula, 1 número"
+                  placeholder="Min 8 chars, 1 uppercase, 1 number"
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
                   className={`border-slate-200 focus:border-blue-500 pr-10 ${fieldErrors.password ? 'border-red-300' : ''}`}
@@ -337,19 +332,19 @@ export default function RegisterForm({ onRegisterSuccess, onBackToLogin }: Regis
               </div>
               {fieldErrors.password && <p className="text-sm text-red-600">{fieldErrors.password}</p>}
             </div>
-            
-            <Button 
-              type="submit" 
+
+            <Button
+              type="submit"
               className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 transition-all duration-200 mt-6"
-              disabled={loading || edad < 18}
+              disabled={loading || age < 18}
             >
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Registrando...
+                  Registering...
                 </>
               ) : (
-                'Crear Cuenta'
+                'Create Account'
               )}
             </Button>
           </form>

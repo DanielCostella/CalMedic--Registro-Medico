@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, UserPlus, Settings, LogOut, BarChart3, Shield } from 'lucide-react';
+import { Users, UserPlus, Settings, LogOut, BarChart3, Shield, CheckSquare } from 'lucide-react';
 import { User } from '../../types/user';
+import DoctorApproval from './DoctorApproval';
+import { supabase } from '@/lib/supabase';
 
 interface AdminDashboardProps {
   user: User;
@@ -12,6 +14,63 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ user, activeSection, onSectionChange, onLogout }: AdminDashboardProps) {
+  const [view, setView] = useState('dashboard'); // 'dashboard' | 'approvals'
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    activeSubscriptions: 0,
+    pendingRequests: 0,
+    mrr: 0
+  });
+
+  useEffect(() => {
+    async function fetchStats() {
+      // 1. Total Users (Profiles)
+      const { count: userCount } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+
+      // 2. Active Doctors (Subscriptions proxy)
+      const { count: activeCount } = await supabase
+        .from('doctors')
+        .select('*', { count: 'exact', head: true })
+        .eq('license_status', 'Active');
+
+      // 3. Pending Requests
+      const { count: pendingCount } = await supabase
+        .from('doctors')
+        .select('*', { count: 'exact', head: true })
+        .eq('license_status', 'In Review');
+
+      // 4. MRR Calculation (Example: $30 per active doctor)
+      const calculatedMRR = (activeCount || 0) * 30;
+
+      setStats({
+        totalUsers: userCount || 0,
+        activeSubscriptions: activeCount || 0,
+        pendingRequests: pendingCount || 0,
+        mrr: calculatedMRR
+      });
+    }
+
+    fetchStats();
+  }, [view]); // Refresh when switching back from approval view
+
+  if (view === 'approvals') {
+     return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+             <header className="bg-white shadow-sm border-b sticky top-0 z-10">
+                <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                    <h1 className="text-xl font-bold text-slate-800">Administración</h1>
+                    <Button variant="ghost" onClick={() => setView('dashboard')}>Volver al Panel</Button>
+                </div>
+             </header>
+             <main className="max-w-4xl mx-auto p-6">
+                <DoctorApproval />
+             </main>
+        </div>
+     );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
@@ -26,7 +85,7 @@ export default function AdminDashboard({ user, activeSection, onSectionChange, o
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-slate-600">
-                Admin: {user.nombres} {user.apellidos}
+                Admin: {user.firstNames} {user.lastNames}
               </span>
               <Button
                 variant="outline"
@@ -61,8 +120,9 @@ export default function AdminDashboard({ user, activeSection, onSectionChange, o
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600">Total Usuarios</p>
-                    <p className="text-2xl font-bold text-slate-800">156</p>
+                    <p className="text-sm font-medium text-slate-600">Usuarios Totales SaaS</p>
+                    <p className="text-2xl font-bold text-slate-800">{stats.totalUsers}</p>
+                    <p className="text-xs text-green-600 mt-1">Registrados en plataforma</p>
                   </div>
                   <Users className="h-8 w-8 text-blue-600" />
                 </div>
@@ -73,8 +133,9 @@ export default function AdminDashboard({ user, activeSection, onSectionChange, o
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600">Médicos</p>
-                    <p className="text-2xl font-bold text-green-600">24</p>
+                    <p className="text-sm font-medium text-slate-600">Suscripciones Activas</p>
+                    <p className="text-2xl font-bold text-green-600">{stats.activeSubscriptions}</p>
+                    <p className="text-xs text-slate-500 mt-1">Profesionales aprobados</p>
                   </div>
                   <Shield className="h-8 w-8 text-green-600" />
                 </div>
@@ -83,12 +144,13 @@ export default function AdminDashboard({ user, activeSection, onSectionChange, o
 
             <Card>
               <CardContent className="p-6">
-                <div className="flex items-center justify-between">
+                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600">Nuevos (7 días)</p>
-                    <p className="text-2xl font-bold text-purple-600">12</p>
+                    <p className="text-sm font-medium text-slate-600">Solicitudes Pendientes</p>
+                    <p className="text-2xl font-bold text-orange-600">{stats.pendingRequests}</p>
+                    <p className="text-xs text-orange-600 mt-1">Requieren revisión</p>
                   </div>
-                  <UserPlus className="h-8 w-8 text-purple-600" />
+                  <UserPlus className="h-8 w-8 text-orange-600" />
                 </div>
               </CardContent>
             </Card>
@@ -97,10 +159,11 @@ export default function AdminDashboard({ user, activeSection, onSectionChange, o
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600">Activos</p>
-                    <p className="text-2xl font-bold text-orange-600">142</p>
+                    <p className="text-sm font-medium text-slate-600">Ingresos Mensuales (Est.)</p>
+                    <p className="text-2xl font-bold text-purple-600">${stats.mrr}</p>
+                    <p className="text-xs text-slate-500 mt-1">Base: $30/profesional</p>
                   </div>
-                  <BarChart3 className="h-8 w-8 text-orange-600" />
+                  <BarChart3 className="h-8 w-8 text-purple-600" />
                 </div>
               </CardContent>
             </Card>
@@ -116,11 +179,11 @@ export default function AdminDashboard({ user, activeSection, onSectionChange, o
               </CardContent>
             </Card>
 
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setView('approvals')}>
               <CardContent className="p-6 text-center">
-                <UserPlus className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                <h3 className="font-semibold text-slate-800 mb-2">Crear Médico</h3>
-                <p className="text-sm text-slate-600">Registrar nuevos profesionales médicos</p>
+                <CheckSquare className="h-12 w-12 text-green-600 mx-auto mb-4" />
+                <h3 className="font-semibold text-slate-800 mb-2">Aprobaciones</h3>
+                <p className="text-sm text-slate-600">Revisar registros de profesionales pendientes</p>
               </CardContent>
             </Card>
 

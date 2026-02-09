@@ -12,11 +12,11 @@
 
 ## 📸 Capturas de Pantalla
 
-*(Espacio reservado para capturas del Dashboard, Portal de Pacientes y Home)*
+*(Vista previa de la plataforma funcionando)*
 
-| Dashboard Médico | Reserva de Turnos Online | Home Institucional |
+| Home Institucional | Reserva de Turnos | Acceso Profesional |
 |:---:|:---:|:---:|
-| ![Dashboard](https://via.placeholder.com/400x200?text=Dashboard+Medico) | ![Reservas](https://via.placeholder.com/400x200?text=Reserva+Turnos) | ![Home](https://via.placeholder.com/400x200?text=Landing+Page) |
+| ![Home](screenshots/home.png) | ![Reservas](screenshots/booking.png) | ![Login](screenshots/login.png) |
 
 ---
 
